@@ -1,0 +1,14 @@
+{
+    "name": "WheelsOfWar",
+    "version": "0.0.1",
+    "dependencies": {
+        "requirejs": "latest",
+        "requirejs-plugins": "latest"
+    },
+    "maybeDeps": {
+        "knockout": "latest",
+        "backbone": "latest",
+        "bootstrap": "latest",
+        "font-awesome": "latest"
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "name": "wheelsofwar",
+    "description": "Wheels Of War",
+    "version": "0.0.1",
+    "private": false,
+    "author": "Sebastian Jørgensen",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/qvazar/WheelsOfWar.git"
+    },
+    "engines": {
+        "node": "latest",
+        "npm": "latest"
+    },
+    "scripts": {
+        "start": "node node_modules/grunt-cli/bin/grunt",
+        "test": "NODE_ENV=test node node_modules/grunt-cli/bin/grunt test",
+        "postinstall": "bower install"
+    },
+    "dependencies": {
+        "express": "latest",
+        "jade": "latest",
+        "mongoose": "latest",
+        "connect-mongo": "latest",
+        "connect-flash": "latest",
+        "passport": "latest",
+        "passport-local": "latest",
+        "passport-facebook": "latest",
+        "passport-twitter": "latest",
+        "passport-google-oauth": "latest",
+        "underscore": "latest",
+        "async": "latest",
+        "view-helpers": "latest",
+        "forever": "latest",
+        "bower": "latest",
+        "grunt": "latest",
+        "grunt-cli": "latest",
+        "socket.io": "latest",
+        "requirejs": "latest",
+        "lazy": "latest",
+        "coffee-script": "latest",
+        "grunt-spritesmith": "latest",
+        "grunt-contrib-coffee": "latest",
+        "grunt-contrib-copy": "latest"
+    },
+    "devDependencies": {
+        "supertest": "latest",
+        "should": "latest",
+        "grunt-contrib-watch": "latest",
+        "grunt-contrib-jshint": "latest",
+        "grunt-nodemon": "latest",
+        "grunt-concurrent": "latest",
+        "grunt-mocha-test": "latest"
+    }
+}
