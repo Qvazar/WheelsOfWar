@@ -6,39 +6,39 @@ module.exports = function(grunt) {
             jade: {
                 files: ['app/views/**'],
                 options: {
-                    livereload: true,
+                    livereload: true
                 }
             },
             js: {
-                files: ['public/dev/scripts/**/*.js', 'app/**/*.js'],
+                files: ['public/src/scripts/**/*.js', 'app/**/*.js'],
                 tasks: ['jshint', 'copy:js'],
                 options: {
-                    livereload: true,
+                    livereload: true
                 }
             },
             coffee: {
-                files: 'public/dev/scripts/**/*.coffee',
+                files: 'public/src/scripts/**/*.coffee',
                 tasks: ['coffee'],
                 options: {
-                    livereload: true,
-                }                
+                    livereload: true
+                }
             },
             sprite: {
-                files: 'public/dev/sprites/*',
+                files: 'public/src/sprites/*',
                 tasks: ['sprite'],
                 options: {
-                    livereload: true,
-                }                
+                    livereload: true
+                }
             },
             html: {
-                files: ['public/dev/**/*.html'],
+                files: ['public/src/*.html'],
                 tasks: ['copy:html'],
                 options: {
-                    livereload: true,
+                    livereload: true
                 }
             },
             css: {
-                files: ['public/dev/styles/**'],
+                files: ['public/src/styles/**'],
                 options: {
                     livereload: true
                 }
@@ -49,9 +49,9 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'public/dev/scripts',
+                        cwd: 'public/src/scripts',
                         src: '**/*.js',
-                        dest: 'public/dev/build/scripts'
+                        dest: 'public/build/dev/scripts'
                     }
                 ]
             },
@@ -59,11 +59,21 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'public/dev',
+                        cwd: 'public/src',
                         src: '*.html',
-                        dest: 'public/dev/build'
+                        dest: 'public/build/dev'
                     }
-                ]                
+                ]
+            },
+            lib: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'public/src/lib',
+                        src: ['jquery/jquery.js', 'requirejs/require.js', 'lazy/dist/lazy.js'],
+                        dest: 'public/build/dev'
+                    }
+                ]
             }
         },
         coffee: {
@@ -72,14 +82,14 @@ module.exports = function(grunt) {
             },
             compile: {
                 expand: true,
-                cwd: 'public/dev/scripts',
+                cwd: 'public/src/scripts',
                 src: '**/*.coffee',
-                dest: 'public/dev/build/scripts',
+                dest: 'public/build/dev/scripts',
                 ext: '.js'
             }
         },
         jshint: {
-            all: ['gruntfile.js', 'public/dev/scripts/**/*.js', 'test/**/*.js', 'app/**/*.js']
+            all: ['gruntfile.js', 'public/src/scripts/**/*.js', 'test/**/*.js', 'app/**/*.js']
         },
         nodemon: {
             dev: {
@@ -99,7 +109,7 @@ module.exports = function(grunt) {
             }
         },
         concurrent: {
-            tasks: ['nodemon', 'watch'], 
+            tasks: ['nodemon', 'watch'],
             options: {
                 logConcurrentOutput: true
             }
@@ -110,15 +120,15 @@ module.exports = function(grunt) {
             },
             src: ['test/**/*.js']
         },
-    	sprite: {
-    	    all: {
-        		src: "public/dev/sprites/*.png",
-        		destImg: "public/dev/build/spritesheet.png",
-        		destCSS: "public/dev/build/spritesheet.json",
-        		imgPath: "../build/spritesheet.png",
-        		algorithm: "binary-tree",
-    	    }
-    	},
+        sprite: {
+            all: {
+                src: 'public/src/sprites/*.png',
+                destImg: 'public/build/dev/spritesheet.png',
+                destCSS: 'public/build/dev/spritesheet.json',
+                imgPath: 'spritesheet.png',
+                algorithm: 'binary-tree'
+            }
+        },
         build: {
             tasks: ['sprite', 'coffee', 'copy']
         }
@@ -138,7 +148,7 @@ module.exports = function(grunt) {
     grunt.option('force', true);
 
     //Default task(s).
-    grunt.registerTask('default', ['jshint', 'concurrent']);
+    grunt.registerTask('default', ['jshint', 'copy', 'coffee', 'concurrent']);
 
     //Test task.
     grunt.registerTask('test', ['mochaTest']);

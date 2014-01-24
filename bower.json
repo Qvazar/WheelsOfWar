@@ -1,14 +1,17 @@
 {
-    "name": "WheelsOfWar",
-    "version": "0.0.1",
-    "dependencies": {
-        "requirejs": "latest",
-        "requirejs-plugins": "latest"
-    },
-    "maybeDeps": {
-        "knockout": "latest",
-        "backbone": "latest",
-        "bootstrap": "latest",
-        "font-awesome": "latest"
-    }
+  "name": "WheelsOfWar",
+  "version": "0.0.1",
+  "dependencies": {
+    "requirejs": "latest",
+    "requirejs-plugins": "latest",
+    "jquery": "latest",
+    "lazy": "latest",
+    "box2d-html5": "latest"
+  },
+  "maybeDeps": {
+    "knockout": "latest",
+    "backbone": "latest",
+    "bootstrap": "latest",
+    "font-awesome": "latest"
+  }
 }
