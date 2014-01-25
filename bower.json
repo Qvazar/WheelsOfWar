@@ -4,9 +4,8 @@
   "dependencies": {
     "requirejs": "latest",
     "requirejs-plugins": "latest",
-    "jquery": "latest",
     "lazy": "latest",
-    "box2d-html5": "latest"
+    "newton": "latest"
   },
   "maybeDeps": {
     "knockout": "latest",

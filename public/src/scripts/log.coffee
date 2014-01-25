@@ -1,14 +1,15 @@
 define [], () ->
 
-  debugEnabled: false
-
   logger =
     log: (level, msg) ->
       if console? and console[level]? and msg? then console[level](msg)
+    debugEnabled: false
+    infoEnabled: true
+    warnEnabled: true
+    errorEnabled: true
 
-    debug: (msg) ->
-      @log 'debug', msg if @debugEnabled
-
-  (logger[level] = (msg) -> @log(level, msg)) for level in ['info', 'warn', 'error']
+  for level in ['info', 'warn', 'error']
+    logger[level] = (msg) ->
+      @log(level, msg) if @[level + 'Enabled']
 
   return logger

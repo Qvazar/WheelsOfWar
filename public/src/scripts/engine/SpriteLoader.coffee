@@ -1,4 +1,4 @@
-define ['require', 'lazy', '../log', 'Sprite'], (require, lazy, log, Sprite) ->
+define ['require', 'lazy', '../log', 'components/Sprite'], (require, lazy, log, Sprite) ->
 
   class SpriteLoader
 
@@ -6,24 +6,32 @@ define ['require', 'lazy', '../log', 'Sprite'], (require, lazy, log, Sprite) ->
       @spriteDefs = {}
 
     loadSprites: (spritesheetImageUrl, spritesheetMapUrl, spriteDefUrls, callback) ->
-      jsonRequires = lazy(arguments[1...2]).flatten().map((url) -> 'json!' + url).toArray()
+      jsonRequires = lazy([spritesheetMapUrl, spriteDefUrls]).flatten().map((url) -> 'json!' + url).toArray()
 
-      require ['image!' + spritesheetImageUrl].concat(jsonRequires), (spritesheetImage, spritesheetMap, spriteDefs) ->
-        spritesheet =
-          image: spritesheetImage,
-          map: spritesheetMap
+      require(
+        ['image!' + spritesheetImageUrl].concat(jsonRequires)
+        (spritesheetImage, spritesheetMap, spriteDefs...) ->
+          spritesheet =
+            image: spritesheetImage,
+            map: spritesheetMap
 
-        lazy(arguments[2..]).each (spriteDef) ->
-          spriteDef.spritesheet = spritesheet
-          @spriteDefs[spriteDef.name] = spriteDef
+          spriteDefs = lazy(spriteDefs).flatten()
+          spriteDefs.each (spriteDef) ->
+            spriteDef.spritesheet = spritesheet
+            @spriteDefs[spriteDef.name] = spriteDef
+            return
+
+          if callback? then callback(null, spriteDefs.toArray())
           return
-
-        if callback? then callback()
+        (error) ->
+          if callback? then callback(error)
+          return
+      )
       return
 
-    createSprite: (spriteName) ->
-      if (spriteDef = @spriteDefs[spriteName])?
+    createSprite: (spriteDefName) ->
+      if (spriteDef = @spriteDefs[spriteDefName])?
         return new Sprite(spriteDef)
       else
-        log.warn 'No sprite definition known with name ' + spriteName + '. Has it been loaded?'
+        log.warn 'No sprite definition known with name ' + spriteDefName + '. Has it been loaded?'
         return

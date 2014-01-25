@@ -8,9 +8,17 @@ requirejs.config
         'jquery': '../lib/jquery/jquery',
         #'socket.io': '/socket.io/socket.io',
         #'underscore': '../lib/underscore/underscore'
-        'lazy': '../lib/lazy/dist/lazy'
+        'lazy': '../lib/lazy/dist/lazy',
+        'requestAnimationFrame': '../shims/requestAnimationFrame',
+        'newton': '../lib/newton/newton'
     },
     shim: {
+      'requestAnimationFrame': {
+        exports: 'requestAnimationFrame'
+      },
+      'newton': {
+        exports: 'Newton'
+      }
 #        'bootstrap': {
 #            deps: ['jquery'],
 #            exports: 'jQuery'

@@ -1,0 +1,11 @@
+[
+    {
+        "name": "222-body",
+        "animations": {
+            "idle": {
+                "frames": ["222-body-idle-1", "222-body-idle-2", "222-body-idle-3", "222-body-idle-2"],
+                "looping": true
+            }
+        }
+    }
+]
