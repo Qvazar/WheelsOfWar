@@ -1,5 +1,5 @@
 .sass-cache
-public/dist
-public/dev/build
-public/dev/lib
+.idea
+public/build
+public/src/lib
 node_modules

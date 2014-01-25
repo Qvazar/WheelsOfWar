@@ -1,0 +1,11 @@
+[
+    {
+        "name": "222",
+        "animations": {
+            "idle": {
+                "frames": ["222-idle-1", "222-idle-2", "222-idle-3", "222-idle-2"],
+                "indefinite": true
+            }
+        }
+    }
+]

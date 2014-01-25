@@ -71,7 +71,7 @@ module.exports = function(grunt) {
                         expand: true,
                         cwd: 'public/src/lib',
                         src: ['jquery/jquery.js', 'requirejs/require.js', 'lazy/dist/lazy.js'],
-                        dest: 'public/build/dev'
+                        dest: 'public/build/dev/lib'
                     }
                 ]
             }
@@ -124,7 +124,7 @@ module.exports = function(grunt) {
             all: {
                 src: 'public/src/sprites/*.png',
                 destImg: 'public/build/dev/spritesheet.png',
-                destCSS: 'public/build/dev/spritesheet.json',
+                destCSS: 'public/build/dev/spritesheet-map.json',
                 imgPath: 'spritesheet.png',
                 algorithm: 'binary-tree'
             }
