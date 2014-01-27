@@ -4,7 +4,7 @@
   "dependencies": {
     "requirejs": "latest",
     "requirejs-plugins": "latest",
-    "lazy": "latest",
+    "underscore": "latest",
     "newton": "latest"
   },
   "maybeDeps": {

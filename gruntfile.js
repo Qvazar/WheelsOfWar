@@ -70,7 +70,14 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: 'public/src/lib',
-                        src: ['jquery/jquery.js', 'requirejs/require.js', 'lazy/dist/lazy.js'],
+                        src: [
+                            'jquery/jquery.js',
+                            'requirejs/require.js',
+                            //'lazy/dist/lazy.js',
+                            'underscore/underscore.js',
+                            'newton/newton.js',
+                            'requirejs-plugins/src/*.js'
+                        ],
                         dest: 'public/build/dev/lib'
                     }
                 ]

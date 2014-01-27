@@ -7,8 +7,8 @@ requirejs.config
         #'bootstrap': '../lib/bootstrap/dist/js/bootstrap',
         'jquery': '../lib/jquery/jquery',
         #'socket.io': '/socket.io/socket.io',
-        #'underscore': '../lib/underscore/underscore'
-        'lazy': '../lib/lazy/dist/lazy',
+        'underscore': '../lib/underscore/underscore'
+        #'lazy': '../lib/lazy/dist/lazy',
         'requestAnimationFrame': '../shims/requestAnimationFrame',
         'newton': '../lib/newton/newton'
     },
@@ -18,7 +18,7 @@ requirejs.config
       },
       'newton': {
         exports: 'Newton'
-      }
+      },
 #        'bootstrap': {
 #            deps: ['jquery'],
 #            exports: 'jQuery'
@@ -26,9 +26,9 @@ requirejs.config
 #        'socket.io': {
 #            exports: 'io'
 #        },
-#        'underscore': {
-#            exports: '_'
-#        }
+      'underscore': {
+          exports: '_'
+      }
     }
 
 define [], () ->

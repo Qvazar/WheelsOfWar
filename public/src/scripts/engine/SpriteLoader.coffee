@@ -1,4 +1,4 @@
-define ['require', 'lazy', '../log', 'components/Sprite'], (require, lazy, log, Sprite) ->
+define ['require', 'underscore', '../log', 'components/Sprite'], (require, _, log, Sprite) ->
 
   class SpriteLoader
 
@@ -6,7 +6,7 @@ define ['require', 'lazy', '../log', 'components/Sprite'], (require, lazy, log, 
       @spriteDefs = {}
 
     loadSprites: (spritesheetImageUrl, spritesheetMapUrl, spriteDefUrls, callback) ->
-      jsonRequires = lazy([spritesheetMapUrl, spriteDefUrls]).flatten().map((url) -> 'json!' + url).toArray()
+      jsonRequires = _.map(_.flatten([spritesheetMapUrl, spriteDefUrls]), (url) -> 'json!' + url)
 
       require(
         ['image!' + spritesheetImageUrl].concat(jsonRequires)
@@ -15,13 +15,13 @@ define ['require', 'lazy', '../log', 'components/Sprite'], (require, lazy, log, 
             image: spritesheetImage,
             map: spritesheetMap
 
-          spriteDefs = lazy(spriteDefs).flatten()
+          spriteDefs = _.flatten(spriteDefs)
           spriteDefs.each (spriteDef) ->
             spriteDef.spritesheet = spritesheet
             @spriteDefs[spriteDef.name] = spriteDef
             return
 
-          if callback? then callback(null, spriteDefs.toArray())
+          if callback? then callback(null, spriteDefs)
           return
         (error) ->
           if callback? then callback(error)

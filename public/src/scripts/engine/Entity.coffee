@@ -1,21 +1,16 @@
-define [], () ->
+define ['underscore', 'ComponentCollection'], (_, ComponentCollection) ->
 
-  class Entity
+  class Entity extends ComponentCollection
 
-    constructor: (@transformation = {translation: [0,0], rotation: 0.0}, @components = {}) ->
+    constructor: (args) ->
+      {@transformation} = args
+      @transformation = _.defaults(@transformation or {}, {translation:[0,0], rotation:0.0})
+      super
 
-    update: (updateArgs) ->
-      component.update(updateArgs) for component in @components when component.update?
+    update: (args) ->
+      c.update(args) for cn, c of @components if not _.isEmpty @components
       return
 
-    render: (renderArgs) ->
-      translation = @transformation.translation
-      rotation = @transformation.rotation
-      context.translate translation[0], translation[1]
-      context.rotate rotation
-
-      for componentName, component of @components when component.render?
-        context.save()
-        component.render(renderArgs)
-        context.restore()
+    render: (args) ->
+      c.render(args) for cn, c of @components if not _.isEmpty @components
       return

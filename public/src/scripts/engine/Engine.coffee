@@ -1,48 +1,39 @@
-define ['requestAnimationFrame', 'newton'], (requestAnimationFrame, Newton) ->
+define ['requestAnimationFrame', 'newton', 'underscore'], (requestAnimationFrame, Newton, _) ->
 
   canvasResolution = [1920, 1080]
-  metersPerPixel = 1 / 64
+  pixelsPerMeter = 64
+  metersPerPixel = 1 / pixelsPerMeter
+
+  toPixels = (meters) ->
+    if _.isArray(meters)
+      pixels = (toPixels meter for meter in meters)
+      return pixels
+    else return meters * pixelsPerMeter
+
+  toMeters = (pixels) ->
+    if _.isArray(pixels)
+      meters = (toMeters pixel for pixel in pixels)
+      return meters
+    else return pixels * metersPerPixel
 
   class Engine
 
-    constructor: (@entities = []) ->
+    constructor: (args) ->
+      {@rootElement, @entities} = args
+      if not @rootElement
+        throw new Error 'rootElement not defined.'
+
+      @entities ?= []
+
       @canvas = null
       @context = null
       @time = 0
-      @updateArgs = {deltaTime: 0, time: 0, counter: 0, engine: this}
       @updateInterval = 1000 / 20
-      @renderArgs = {deltaTime: 0, time: 0, counter: 0, engine: this}
       @timeOfLastRender = 0.0
       @sim = null
 
-    createCanvas: (parentElement) ->
-      if @canvas?
-        throw new Error 'canvas already exists.'
-
-      @canvas = document.createElement('canvas')
-
-      if not @canvas.getContext?
-        @destroyCanvas()
-        throw new Error 'canvas is not supported.'
-
-      @canvas.width = canvasResolution[0]
-      @canvas.height = canvasResolution[1]
-      @context = @canvas.getContext('2d')
-
-      if not @context?
-        @destroyCanvas()
-        throw new Error 'No 2d context found.'
-
-      parentElement?.appendChild @canvas
-      return @canvas
-
-    destroyCanvas: () ->
-      @context = null
-
-      @canvas?.parentNode?.removeChild(@canvas)
-      @canvas = null
-
-      return
+      @updateArgs = {deltaTime: 0, time: 0, counter: 0, engine: this}
+      @renderArgs = {deltaTime: 0, time: 0, counter: 0, engine: this, toMeters, toPixels, @rootElement}
 
     start: () ->
       if @sim?
@@ -68,6 +59,8 @@ define ['requestAnimationFrame', 'newton'], (requestAnimationFrame, Newton) ->
       args.time = @time
       args.counter += 1
 
+      args = Object.create args
+
       entity.update args for entity in @entities
 
       return
@@ -80,8 +73,9 @@ define ['requestAnimationFrame', 'newton'], (requestAnimationFrame, Newton) ->
       args.deltaTime = deltaTime
       args.time = @time
       args.counter += 1
-      args.context = @context
       args.alpha = (@timeOfLastRender - @time) / @updateInterval
+
+      args = Object.create args
 
       entity.render args for entity in @entities
 

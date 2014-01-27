@@ -1,41 +1,53 @@
-define ['log'], (log) ->
+define ['../../log', '../../css', 'Component'], (log, css, Component) ->
 
   animationFrameTime = 1000 / 20 # time between frames
   defaultAnimationName = 'idle'
 
-  class Sprite
+  class Sprite extends Component
 
-    constructor: (@spriteDef, @transformation = {translation:[0,0], rotation:0.0}) ->
+    constructor: (args) ->
+      {@spriteDef} = args
       @currentAnimation = defaultAnimationName
       @currentFrameIndex = 0
       @currentFrameStartTime = null
+      @canvas = null
+      @context = null
+      super
 
     render: (args) ->
+      if not @canvas?
+        spriteMap = @spriteDef.animations[@currentAnimation].frames[@currentFrameIndex]
+        {@canvas, @context} = createCanvas(spriteMap.w, spriteMap.h)
+        args.rootElement.appendChild @canvas
+
       if not @currentFrameStartTime? then @currentFrameStartTime = args.time
 
       if (framesToPush = Math.floor((args.time - @currentFrameStartTime) / animationFrameTime)) > 0
-        anim = @spriteDef.animations[@currentAnimation];
+        anim = @spriteDef.animations[@currentAnimation]
         @currentFrameIndex = (@currentFrameIndex + framesToPush) % anim.keys.length
         @currentFrameStartTime = args.time
 
         if @currentFrameIndex is 0 and not anim.looping
           @currentAnimation = defaultAnimationName
 
-      currentImage = @spriteDef.animations[@currentAnimation].frames[@currentFrameIndex]
-      spriteMap = @spriteDef.spritesheet.map[currentImage]
-      context = args.context
+      currentFrame = @spriteDef.animations[@currentAnimation].frames[@currentFrameIndex]
+      spriteMap = @spriteDef.spritesheet.map[currentFrame]
 
       rotation = @transformation.rotation
-      translation = @transformation.translation
-      context.rotate rotation
-      context.translate translation[0], translation[1]
+      translation = args.toPixels @transformation.translation
+      css.transform @canvas, translation
 
-      context.drawImage(
-        @spriteDef.spritesheet.image
-        spriteMap.x, spriteMap.y, spriteMap.w, spriteMap.h,
-        spriteMap.w * -.5, spriteMap.h * -.5
-      )
-      return
+      args.useContext (context) =>
+        context.rotate rotation
+        context.translate translation[0], translation[1]
+
+        context.drawImage(
+          @spriteDef.spritesheet.image
+          spriteMap.x, spriteMap.y, spriteMap.w, spriteMap.h,
+          spriteMap.w * -.5, spriteMap.h * -.5
+        )
+
+      super
 
     animate: (animationName) ->
       if @spriteDef.animations[animationName]?
