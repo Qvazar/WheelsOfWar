@@ -3,7 +3,7 @@ define ['underscore', '../ComponentCollection'], (_, ComponentCollection) ->
   class Component extends ComponentCollection
 
     constructor: (args) ->
-      {@transformation} = args
+      {@transformation} = args if args?
       @transformation = _.defaults(@transformation or {}, {translation:[0,0], rotation:0.0})
       @absoluteTransformation = {translation:[0,0], rotation:0.0}
       @parent = null

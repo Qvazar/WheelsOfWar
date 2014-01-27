@@ -32,8 +32,8 @@ define ['requestAnimationFrame', 'newton', 'underscore'], (requestAnimationFrame
       @timeOfLastRender = 0.0
       @sim = null
 
-      @updateArgs = {deltaTime: 0, time: 0, counter: 0, engine: this}
-      @renderArgs = {deltaTime: 0, time: 0, counter: 0, engine: this, toMeters, toPixels, @rootElement}
+      @updateContext = {deltaTime: 0, time: 0, counter: 0, engine: this}
+      @renderContext = {deltaTime: 0, time: 0, counter: 0, engine: this, toMeters, toPixels, @rootElement}
 
     start: () ->
       if @sim?
@@ -54,12 +54,10 @@ define ['requestAnimationFrame', 'newton', 'underscore'], (requestAnimationFrame
       deltaTime = deltaTime / 1000.0
       @time += deltaTime
 
-      args = @updateArgs
+      args = @updateContext
       args.deltaTime = deltaTime
       args.time = @time
       args.counter += 1
-
-      args = Object.create args
 
       entity.update args for entity in @entities
 
@@ -69,13 +67,11 @@ define ['requestAnimationFrame', 'newton', 'underscore'], (requestAnimationFrame
       deltaTime = deltaTime / 1000.0
       @timeOfLastRender += deltaTime
 
-      args = @renderArgs
+      args = @renderContext
       args.deltaTime = deltaTime
       args.time = @time
       args.counter += 1
       args.alpha = (@timeOfLastRender - @time) / @updateInterval
-
-      args = Object.create args
 
       entity.render args for entity in @entities
 
