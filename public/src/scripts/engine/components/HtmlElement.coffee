@@ -1,4 +1,4 @@
-define ['/log', '/css', 'Component'], (log, css, Component) ->
+define ['underscore', '/log', '/css', 'Component'], (_, log, css, Component) ->
 
   defaultCssClass = 'html-component'
 
@@ -13,7 +13,6 @@ define ['/log', '/css', 'Component'], (log, css, Component) ->
       @width ?= 64
       @height ?= 64
       @element = @createElement()
-      @contextExt = {@element}
 
     createElement: (tagName = 'div', cssClasses...) ->
       element = document.createElement(tagName)
@@ -23,9 +22,15 @@ define ['/log', '/css', 'Component'], (log, css, Component) ->
       return element
 
     update: (context) ->
-      @contextExt.prototype = context;
-      super @contextExt
+      context = Object.create(context)
+      context.element = @element
+      super context
+      return
 
-    render: (args) ->
-      @contextExt.prototype = context;
-      super @contextExt
+    render: (context) ->
+      css.transform @element, @transformation
+
+      context = Object.create(context)
+      context.element = @element
+      super context
+      return

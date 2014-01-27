@@ -9,14 +9,39 @@ define ['/log', '/css', 'HtmlElement'], (log, css, HtmlElementComponent) ->
 
     constructor: (args) ->
       super
-      @context = @element.getContext?('2d') or throw new Error 'canvas 2d context is not supported.'
+
+      {@clearOnRender} = args if args?
+      @clearOnRender ?= false
+      @canvasContext = @element.getContext?('2d') or throw new Error 'canvas 2d context is not supported.'
+      @canvasContext.translate @width / 2, @height / 2
+
+      @draw = (drawFn) =>
+        @canvasContext.save()
+        try {
+          drawFn @canvasContext
+        } finally {
+          @canvasContext.restore()
+        }
 
     createElement: () ->
-      canvas = super('canvas', cssClass)
-      canvas.width = @width
-      canvas.height = @height
+      super('canvas', cssClass)
+      @element.width = @width
+      @element.height = @height
 
-    update: (args) ->
+    clearCanvas: () ->
+      @element.width = @width
+
+    update: (context) ->
+      context = Object.create(context)
+      context.canvasContext = @canvasContext
+      super context
+      return
 
 
-    render: (args) ->
+    render: (context) ->
+      @clearCanvas() if @clearOnRender
+
+      context = Object.create(context)
+      context.draw = @draw
+      super context
+      return

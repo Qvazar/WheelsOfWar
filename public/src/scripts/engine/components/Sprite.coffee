@@ -10,8 +10,6 @@ define ['../../log', '../../css', 'Component'], (log, css, Component) ->
       @currentAnimation = defaultAnimationName
       @currentFrameIndex = 0
       @currentFrameStartTime = null
-      @canvas = null
-      @context = null
       super
 
     render: (args) ->

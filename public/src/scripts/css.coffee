@@ -35,7 +35,7 @@ define [], () ->
       tr = transformation.translation
       r = transformation.rotation
 
-      "translate#{ if supports3d then '3d' else '' }(#{ tr[0] }px,#{ tr[0] }px#{ if supports3d then ',0' else '' }) rotate(#{ r }rad)"
+      return "translate#{ if supports3d then '3d' else '' }(#{ tr[0] }px,#{ tr[0] }px#{ if supports3d then ',0' else '' }) rotate(#{ r }rad)"
   )()
 
   return {
@@ -45,5 +45,5 @@ define [], () ->
       return
 
     transform: (element, transformation) ->
-      element.style[vendorProperty('transform')] = transformString transformation
+      element.style[vendorProperty('transform')] = transformString(transformation)
   }
