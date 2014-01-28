@@ -13,6 +13,9 @@ define ['underscore', '/log', '/css', 'Component'], (_, log, css, Component) ->
       @width ?= 64
       @height ?= 64
       @element = @createElement()
+      @contextExt = {@element}
+      @updateContext = null
+      @renderContext = null
 
     createElement: (tagName = 'div', cssClasses...) ->
       element = document.createElement(tagName)
@@ -22,15 +25,19 @@ define ['underscore', '/log', '/css', 'Component'], (_, log, css, Component) ->
       return element
 
     update: (context) ->
-      context = Object.create(context)
-      context.element = @element
-      super context
+      if not @updateContext?.prototype is context
+        @updateContext = Object.create(context)
+        @updateContext = _.extend(@updateContext, @contextExt)
+
+      super @updateContext
       return
 
     render: (context) ->
       css.transform @element, @transformation
 
-      context = Object.create(context)
-      context.element = @element
-      super context
+      if not @renderContext?.prototype is context
+        @renderContext = Object.create(context)
+        @renderContext = _.extend(@renderContext, @contextExt)
+
+      super @renderContext
       return
