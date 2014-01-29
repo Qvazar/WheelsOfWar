@@ -17,8 +17,7 @@ define [], () ->
       vPropName = propMap[propName]
       if vPropName? then return vPropName
 
-      if element.style[propName] then return propMap[propName] = propName
-
+      if element.style[propName]? then return propMap[propName] = propName
 
       for v in vendors
         vPropName = v + propName
@@ -27,16 +26,7 @@ define [], () ->
       return null
   )()
 
-  transformString = (() ->
-    supports3d = null
-
-    return (transformation) ->
-      supports3d ?= (vendorProperty document.createElement('div'), 'perspective')?
-      tr = transformation.translation
-      r = transformation.rotation
-
-      return "translate#{ if supports3d then '3d' else '' }(#{ tr[0] }px,#{ tr[0] }px#{ if supports3d then ',0' else '' }) rotate(#{ r }rad)"
-  )()
+  transformStringArray = null;
 
   return {
     createRule: (rule) ->
@@ -44,6 +34,13 @@ define [], () ->
       sheet.insertRule rule, 0
       return
 
-    transform: (element, transformation) ->
-      element.style[vendorProperty('transform')] = transformString(transformation)
+    transform: (element, x, y, r) ->
+      transformStringArray ?= if vendorProperty(element, 'perspective')? then ['translate3d(', 'x', 'px,', 'y', 'px,0) rotate(', 'r', 'rad)'] else
+        ['translate(', 'x', 'px,', 'y', 'px) rotate(', 'r', 'rad)']
+
+      transformStringArray[1] = x
+      transformStringArray[3] = y
+      transformStringArray[5] = r
+
+      element.style[vendorProperty('transform')] = transformStringArray.join('')
   }

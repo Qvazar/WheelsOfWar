@@ -25,7 +25,7 @@ define ['underscore', '/log', '/css', 'Component'], (_, log, css, Component) ->
       return element
 
     update: (context) ->
-      if not @updateContext?.prototype is context
+      if @updateContext?.prototype isnt context
         @updateContext = Object.create(context)
         @updateContext = _.extend(@updateContext, @contextExt)
 
@@ -33,9 +33,12 @@ define ['underscore', '/log', '/css', 'Component'], (_, log, css, Component) ->
       return
 
     render: (context) ->
-      css.transform @element, @transformation
+      x = @transformation.translation[0] - @width/2
+      y = @transformation.translation[1] - @height/2
+      r = @transformation.rotation
+      css.transform @element, x, y, r
 
-      if not @renderContext?.prototype is context
+      if @renderContext?.prototype isnt context
         @renderContext = Object.create(context)
         @renderContext = _.extend(@renderContext, @contextExt)
 

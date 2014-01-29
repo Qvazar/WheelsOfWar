@@ -1,6 +1,5 @@
 define ['requestAnimationFrame', 'newton', 'underscore'], (requestAnimationFrame, Newton, _) ->
 
-  canvasResolution = [1920, 1080]
   pixelsPerMeter = 64
   metersPerPixel = 1 / pixelsPerMeter
 
@@ -19,21 +18,15 @@ define ['requestAnimationFrame', 'newton', 'underscore'], (requestAnimationFrame
   class Engine
 
     constructor: (args) ->
-      {@rootElement, @entities} = args
-      if not @rootElement
-        throw new Error 'rootElement not defined.'
+      {@rootComponent, @updateInterval} = args if args?
 
-      @entities ?= []
-
-      @canvas = null
-      @context = null
       @time = 0
-      @updateInterval = 1000 / 20
+      @updateInterval ?= 1000 / 20
       @timeOfLastRender = 0.0
       @sim = null
 
       @updateContext = {deltaTime: 0, time: 0, counter: 0, engine: this}
-      @renderContext = {deltaTime: 0, time: 0, counter: 0, engine: this, toMeters, toPixels, @rootElement}
+      @renderContext = {deltaTime: 0, time: 0, counter: 0, engine: this, toMeters, toPixels}
 
     start: () ->
       if @sim?
@@ -54,12 +47,12 @@ define ['requestAnimationFrame', 'newton', 'underscore'], (requestAnimationFrame
       deltaTime = deltaTime / 1000.0
       @time += deltaTime
 
-      args = @updateContext
-      args.deltaTime = deltaTime
-      args.time = @time
-      args.counter += 1
+      context = @updateContext
+      context.deltaTime = deltaTime
+      context.time = @time
+      context.counter += 1
 
-      entity.update args for entity in @entities
+      @rootComponent.update(context) if @rootComponent?
 
       return
 
@@ -67,12 +60,12 @@ define ['requestAnimationFrame', 'newton', 'underscore'], (requestAnimationFrame
       deltaTime = deltaTime / 1000.0
       @timeOfLastRender += deltaTime
 
-      args = @renderContext
-      args.deltaTime = deltaTime
-      args.time = @time
-      args.counter += 1
-      args.alpha = (@timeOfLastRender - @time) / @updateInterval
+      context = @renderContext
+      context.deltaTime = deltaTime
+      context.time = @time
+      context.counter += 1
+      context.alpha = (@timeOfLastRender - @time) / @updateInterval
 
-      entity.render args for entity in @entities
+      @rootComponent.render(context) if @rootComponent?
 
       return
