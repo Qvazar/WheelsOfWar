@@ -31,5 +31,28 @@ requirejs.config
       }
     }
 
-define [], () ->
-  # TODO load and start the game!
+define(
+  ['engine/log', 'engine/Engine', 'engine/components/Component', 'engine/components/Html'],
+  (log, Engine, Component, HtmlComponent) ->
+    log.debugEnabled = yes
+
+    class Rotator extends HtmlComponent
+      update: (context) ->
+        @transformation.rotation += Math.PI / 16
+        super
+      render: (context) ->
+        @get('rootHtml').element.innerText = context.fps
+        super
+
+    rootComponent = new Rotator()
+    rootComponent.add
+      rootHtml: html = new HtmlComponent({width:10, height:10, cssClasses: 'root-node'})
+
+    mainView = document.getElementById('mainView')
+
+    engine = new Engine({rootComponent, updateInterval: 500})
+
+    mainView.innerHTML = ''
+    mainView.appendChild rootComponent.element
+    engine.start()
+)

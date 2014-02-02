@@ -1,4 +1,4 @@
-define ['../../log', '../../css', 'Component'], (log, css, Component) ->
+define ['../log', '../css', '../util', 'Component'], (log, css, util, Component) ->
 
   animationFrameTime = 1000 / 20 # time between frames
   defaultAnimationName = 'idle'
@@ -32,13 +32,11 @@ define ['../../log', '../../css', 'Component'], (log, css, Component) ->
       spriteMap = @spriteDef.spritesheet.map[currentFrame]
 
       rotation = @transformation.rotation
-      translation = args.toPixels @transformation.translation
-      css.transform @canvas, translation
+      translation = util.toPixels @transformation.translation
+      scale = @transformation.scale
+      css.transform @canvas, translation, scale
 
-      args.useContext (context) =>
-        context.rotate rotation
-        context.translate translation[0], translation[1]
-
+      args.draw (context) =>
         context.drawImage(
           @spriteDef.spritesheet.image
           spriteMap.x, spriteMap.y, spriteMap.w, spriteMap.h,

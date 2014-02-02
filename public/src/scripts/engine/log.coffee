@@ -8,8 +8,10 @@ define [], () ->
     warnEnabled: true
     errorEnabled: true
 
-  for level in ['info', 'warn', 'error']
-    logger[level] = (msg) ->
-      @log(level, msg) if @[level + 'Enabled']
+  for level in ['debug', 'info', 'warn', 'error']
+    do (level) ->
+      logger[level] = (msg) ->
+        @log(level, msg) if @[level + 'Enabled']
+      return
 
   return logger

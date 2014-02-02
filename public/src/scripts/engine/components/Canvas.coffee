@@ -1,10 +1,10 @@
-define ['/log', '/css', 'HtmlElement'], (log, css, HtmlElementComponent) ->
+define ['/log', '/css', './Html'], (log, css, HtmlComponent) ->
 
   cssClass = 'canvas-component'
 
-  css.createRule ".#{cssClass} { position:absolute; top:0; left:0 }"
+#  css.createRule ".#{cssClass} { position:absolute; top:0; left:0 }"
 
-  class CanvasComponent extends HtmlElementComponent
+  class CanvasComponent extends HtmlComponent
 
     constructor: (args) ->
       super
@@ -12,16 +12,8 @@ define ['/log', '/css', 'HtmlElement'], (log, css, HtmlElementComponent) ->
       {@clearOnRender} = args if args?
       @clearOnRender ?= false
       @canvasContext = @element.getContext?('2d') or throw new Error 'canvas 2d context is not supported.'
-      @canvasContext.translate @width / 2 - .5, @height / 2 - .5
 
-      draw = (drawFn) =>
-        @canvasContext.save()
-        try
-          drawFn @canvasContext
-        finally
-          @canvasContext.restore()
-
-      @renderContextExt = {@canvasContext, draw}
+      @renderContextExt = {@canvasContext, draw: @drawOnCanvas.bind(this)}
       @renderContext = null
 
     createElement: () ->
@@ -30,7 +22,7 @@ define ['/log', '/css', 'HtmlElement'], (log, css, HtmlElementComponent) ->
       @element.height = @height
 
     clearCanvas: () ->
-      @element.width = @width
+      @canvasContext.clearRect(0, 0, @element.width, @element.height)
 
     render: (context) ->
       @clearCanvas() if @clearOnRender
@@ -41,3 +33,13 @@ define ['/log', '/css', 'HtmlElement'], (log, css, HtmlElementComponent) ->
 
       super @renderContext
       return
+
+    drawOnCanvas = (drawFn) =>
+      @canvasContext.save()
+      # Move to the center of the canvas and offset by ½ a pixel to draw "on pixels" not between them!
+      @canvasContext.translate @width / 2 - .5, @height / 2 - .5
+      try
+        drawFn @canvasContext
+      finally
+        @canvasContext.restore()
+
