@@ -15,6 +15,7 @@ define [], () ->
         @components[name] = component
         component.name = name
         component.parent = this
+        component.added?(this)
 
       return this
 
@@ -23,6 +24,8 @@ define [], () ->
         c = @get(name)
         delete @components[name]
         c.parent = c.name = null
+        c.removed?(this)
+
       return this
 
     get: (name) ->

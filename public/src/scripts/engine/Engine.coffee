@@ -30,8 +30,6 @@ define ['./log', 'newton', 'underscore'], (log, Newton, _) ->
       return
 
     update: (deltaTime) ->
-#      log.debug 'update'
-
       deltaTime = deltaTime / 1000.0
       @time += deltaTime
 
@@ -47,7 +45,6 @@ define ['./log', 'newton', 'underscore'], (log, Newton, _) ->
       return
 
     render: () ->
-#      log.debug 'render'
       now = Date.now()
       timeSinceUpdate = now - @timeOfLastUpdate
 

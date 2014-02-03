@@ -8,6 +8,10 @@ define ['underscore', '../ComponentCollection'], (_, ComponentCollection) ->
       @name = null
       super
 
+    added: (parent) ->
+
+    removed: (parent) ->
+
     update: (args) ->
 #      @absoluteTransformation.translation[0] = @transformation.translation[0]
 #      @absoluteTransformation.translation[1] = @transformation.translation[1]
@@ -18,11 +22,11 @@ define ['underscore', '../ComponentCollection'], (_, ComponentCollection) ->
 #        @absoluteTransformation.translation[1] += parentAbsTrans.translation[1]
 #        @absoluteTransformation.rotation += parentAbsTrans.rotation
 
-      c.update(args) for cn, c of @components if not _.isEmpty @components
+      c.update(args) for cn, c of @components
       return
 
     render: (args) ->
-      c.render(args) for cn, c of @components if not _.isEmpty @components
+      c.render(args) for cn, c of @components
       return
 
  #   getAbsoluteTransformation: (transformation = {translation:[0, 0], rotation: 0}) ->

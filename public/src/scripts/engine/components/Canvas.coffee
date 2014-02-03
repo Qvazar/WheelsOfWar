@@ -1,4 +1,4 @@
-define ['/log', '/css', './Html'], (log, css, HtmlComponent) ->
+define ['../log', '../css', '../util', './Html'], (log, css, util, HtmlComponent) ->
 
   cssClass = 'canvas-component'
 
@@ -18,11 +18,11 @@ define ['/log', '/css', './Html'], (log, css, HtmlComponent) ->
 
     createElement: () ->
       super('canvas', cssClass)
-      @element.width = @width
-      @element.height = @height
+      @element.width = util.toPixels @width
+      @element.height = util.toPixels @height
 
     clearCanvas: () ->
-      @canvasContext.clearRect(0, 0, @element.width, @element.height)
+      @canvasContext.clearRect 0, 0, @element.width, @element.height
 
     render: (context) ->
       @clearCanvas() if @clearOnRender

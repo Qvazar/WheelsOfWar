@@ -40,13 +40,8 @@ define(
       update: (context) ->
         @transformation.rotation += Math.PI / 16
         super
-      render: (context) ->
-        @get('rootHtml').element.innerText = context.fps
-        super
 
-    rootComponent = new Rotator()
-    rootComponent.add
-      rootHtml: html = new HtmlComponent({width:10, height:10, cssClasses: 'root-node'})
+    rootComponent = new Rotator({width:10, height:10, cssClasses: 'root-node'})
 
     mainView = document.getElementById('mainView')
 

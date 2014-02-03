@@ -1,22 +1,24 @@
-define ['underscore', '../log', '../css', '../util', './Component'], (_, log, css, util, Component) ->
+define ['underscore', '../log', '../css', '../util', '../Transformation', './Component'], (_, log, css, util, Transformation, Component) ->
 
   cssClass = 'html-component'
+  anchorCssClass = 'html-component-anchor'
 
   # Create sprite stylesheet
-  css.createRule ".#{cssClass} { position:absolute; top:0; left:0 }"
+  css.createRule ".#{cssClass} { display:block; position:absolute; top:0; left:0; }"
+  css.createRule ".#{anchorCssClass} { display:block; position:absolute; top:50%; left:50%; width:1px; height:1px; overflow:visible; }"
 
   class HtmlElementComponent extends Component
 
     constructor: (args) ->
       super
-      {@width, @height, @cssClasses, @transformation} = args if args?
-      @transformation = _.defaults(@transformation or {}, {translation:[0,0], rotation:0.0, scale: 1.0})
-      @_oldTransformation = {translation:[@transformation.translation[0],@transformation.translation[1]], rotation:@transformation.rotation, scale: @transformation.scale}
-      @_deltaTransformation = {translation:[0,0], rotation:0.0, scale: 0.0}
+      {@width, @height, @cssClasses} = args if args?
+      @transformation = new Transformation(args?.transformation)
+      @_oldTransformation = new Transformation(@transformation)
+      @_deltaTransformation = new Transformation()
       @width ?= 1
       @height ?= 1
       @element = @createElement()
-      @contextExt = {@element}
+      @contextExt = {element: @element.firstChild}
       @updateContext = null
       @renderContext = null
 
@@ -25,25 +27,41 @@ define ['underscore', '../log', '../css', '../util', './Component'], (_, log, cs
       element.className = [cssClass].concat(@cssClasses).concat(cssClasses).join(' ')
       element.style.width = util.toPixels(@width)  + 'px'
       element.style.height = util.toPixels(@height) + 'px'
+
+      anchor = document.createElement 'div'
+      anchor.className = anchorCssClass
+      element.appendChild anchor
+
       return element
 
+    removed: (parent) ->
+      @element.parentNode?.removeChild @element
+      @updateContext = null
+      @renderContext = null
+      super
+      return
+
     update: (context) ->
-      if @updateContext?.prototype isnt context
-        @updateContext = Object.create(context)
-        @updateContext = _.extend(@updateContext, @contextExt)
+      if @element.parentNode isnt context.element
+        context.element?.appendChild @element
 
       newTransformation = @transformation
       oldTransformation = @_oldTransformation
       deltaTransformation = @_deltaTransformation
-      deltaTransformation.translation[0] = newTransformation.translation[0] - oldTransformation.translation[0]
-      deltaTransformation.translation[1] = newTransformation.translation[1] - oldTransformation.translation[1]
+
+      deltaTransformation.x = newTransformation.x - oldTransformation.x
+      deltaTransformation.y = newTransformation.y - oldTransformation.y
       deltaTransformation.rotation = newTransformation.rotation - oldTransformation.rotation
       deltaTransformation.scale = newTransformation.scale - oldTransformation.scale
 
-      oldTransformation.translation[0] = newTransformation.translation[0]
-      oldTransformation.translation[1] = newTransformation.translation[1]
+      oldTransformation.x = newTransformation.x
+      oldTransformation.y = newTransformation.y
       oldTransformation.rotation = newTransformation.rotation
       oldTransformation.scale = newTransformation.scale
+
+      if not @updateContext?
+        @updateContext = Object.create(context)
+        @updateContext = _.extend(@updateContext, @contextExt)
 
       super @updateContext
       return
@@ -52,14 +70,14 @@ define ['underscore', '../log', '../css', '../util', './Component'], (_, log, cs
       deltaTrans = @_deltaTransformation
       targetTrans = @transformation
       invAlpha = 1.0 - context.alpha
-      x = util.toPixels((targetTrans.translation[0] - (deltaTrans.translation[0] * invAlpha)) - @width/2)
-      y = util.toPixels((targetTrans.translation[1] - (deltaTrans.translation[1] * invAlpha)) - @width/2)
+      x = util.toPixels((targetTrans.x - (deltaTrans.x * invAlpha)) - @width/2)
+      y = util.toPixels((targetTrans.y - (deltaTrans.y * invAlpha)) - @width/2)
       r = targetTrans.rotation - (deltaTrans.rotation * invAlpha)
       s = targetTrans.scale - (deltaTrans.scale * invAlpha)
 
       css.transform @element, x, y, r, s
 
-      if @renderContext?.prototype isnt context
+      if not @renderContext?
         @renderContext = Object.create(context)
         @renderContext = _.extend(@renderContext, @contextExt)
 
