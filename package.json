@@ -37,11 +37,7 @@
         "grunt-cli": "latest",
         "socket.io": "latest",
         "requirejs": "latest",
-        "lazy": "latest",
-        "coffee-script": "latest",
-        "grunt-spritesmith": "latest",
-        "grunt-contrib-coffee": "latest",
-        "grunt-contrib-copy": "latest"
+        "lazy": "latest"
     },
     "devDependencies": {
         "supertest": "latest",
@@ -50,6 +46,11 @@
         "grunt-contrib-jshint": "latest",
         "grunt-nodemon": "latest",
         "grunt-concurrent": "latest",
-        "grunt-mocha-test": "latest"
+        "grunt-mocha-test": "latest",
+        "coffee-script": "latest",
+        "grunt-spritesmith": "latest",
+        "grunt-contrib-coffee": "latest",
+        "grunt-contrib-copy": "latest",
+        "grunt-contrib-compass": "latest"
     }
 }

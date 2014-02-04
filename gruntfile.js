@@ -81,6 +81,16 @@ module.exports = function(grunt) {
                         dest: 'public/build/dev/lib'
                     }
                 ]
+            },
+            css: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'public/src/styles',
+                        src: '**/*.css',
+                        dest: 'public/build/dev/styles'
+                    }
+                ]
             }
         },
         coffee: {
@@ -116,7 +126,7 @@ module.exports = function(grunt) {
             }
         },
         concurrent: {
-            tasks: ['nodemon', 'watch'],
+            tasks: ['nodemon', 'watch', 'compass:watch'],
             options: {
                 logConcurrentOutput: true
             }
@@ -137,12 +147,20 @@ module.exports = function(grunt) {
             }
         },
         compass: {
-            all: {
-
+            public: {
+                options: {
+                    sassDir: 'public/src/sass',
+                    cssDir: 'public/build/dev/styles'
+                }
+            },
+            watch: {
+                options: {
+                    debugInfo: true,
+                    sassDir: 'public/src/sass',
+                    cssDir: 'public/build/dev/styles',
+                    watch: true
+                }
             }
-        },
-        build: {
-            tasks: ['compass', 'sprite', 'coffee', 'copy']
         }
     });
 
@@ -155,12 +173,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-spritesmith');
     grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-compass');
 
     //Making grunt default to force in order not to break the project.
     grunt.option('force', true);
 
     //Default task(s).
-    grunt.registerTask('default', ['jshint', 'copy', 'coffee', 'concurrent']);
+    grunt.registerTask('build', ['compass', 'sprite', 'jshint', 'coffee', 'copy']);
+    grunt.registerTask('default', ['build', 'concurrent']);
 
     //Test task.
     grunt.registerTask('test', ['mochaTest']);

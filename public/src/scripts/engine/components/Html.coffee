@@ -77,7 +77,7 @@ define ['underscore', '../log', '../css', '../util', '../Transformation', './Com
       r = targetTrans.rotation - (deltaTrans.rotation * invAlpha)
       s = targetTrans.scale - (deltaTrans.scale * invAlpha)
 
-      css.transform @element, x, y, r, s
+      css.transform @element, x, y, r, s if (context.counter % 7 is 0)
 
       if not @renderContext?
         @renderContext = Object.create(context)

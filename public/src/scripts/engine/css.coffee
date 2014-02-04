@@ -39,10 +39,10 @@ define ['./log'], (log) ->
       return
 
     transform: (element, x, y, rot, scale) ->
-      transformStringArray ?= if false and vendorProperty('perspective', element)?
-        ['translate3d(', 'x', 'px,', 'y', 'px,0) rotate(', 'r', 'rad) scale(', 's', ')']
+      transformStringArray ?= if vendorProperty('perspective', element)?
+        ['translateX(', 'x', 'px) translateY(', 'y', 'px) translateZ(0) rotate(', 'r', 'rad) scale(', 's', ')']
       else
-        ['translate(', 'x', 'px,', 'y', 'px) rotate(', 'r', 'rad) scale(', 's', ')']
+        ['translateX(', 'x', 'px) translateY(', 'y', 'px) rotate(', 'r', 'rad) scale(', 's', ')']
 
       transformStringArray[1] = x
       transformStringArray[3] = y
