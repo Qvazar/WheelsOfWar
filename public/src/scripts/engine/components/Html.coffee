@@ -5,7 +5,7 @@ define ['underscore', '../log', '../css', '../util', '../Transformation', './Com
 
   # Create sprite stylesheet
   css.createRule ".#{cssClass} { display:block; position:absolute; top:0; left:0; }"
-  css.createRule ".#{anchorCssClass} { display:block; position:absolute; top:50%; left:50%; width:1px; height:1px; overflow:visible; }"
+  #css.createRule ".#{anchorCssClass} { display:block; position:absolute; top:50%; left:50%; width:1px; height:1px; overflow:visible; }"
 
   class HtmlElementComponent extends Component
 
@@ -24,13 +24,15 @@ define ['underscore', '../log', '../css', '../util', '../Transformation', './Com
 
     createElement: (tagName = 'div', cssClasses...) ->
       element = document.createElement(tagName)
-      element.className = [cssClass].concat(@cssClasses).concat(cssClasses).join(' ')
-      element.style.width = util.toPixels(@width)  + 'px'
-      element.style.height = util.toPixels(@height) + 'px'
+      pxWidth = util.toPixels(@width)
+      pxHeight = util.toPixels(@height)
 
-      anchor = document.createElement 'div'
-      anchor.className = anchorCssClass
-      element.appendChild anchor
+      element.className = [cssClass].concat(@cssClasses).concat(cssClasses).join(' ')
+      element.style.width = pxWidth  + 'px'
+      element.style.height = pxHeight + 'px'
+      element.style.top = (pxWidth / 2 * -1) + 'px'
+      element.style.left = (pxHeight / 2 * -1) + 'px'
+      element.innerHTML = "<div class=\"#{anchorCssClass}\"></div>"
 
       return element
 
@@ -70,8 +72,8 @@ define ['underscore', '../log', '../css', '../util', '../Transformation', './Com
       deltaTrans = @_deltaTransformation
       targetTrans = @transformation
       invAlpha = 1.0 - context.alpha
-      x = util.toPixels((targetTrans.x - (deltaTrans.x * invAlpha)) - @width/2)
-      y = util.toPixels((targetTrans.y - (deltaTrans.y * invAlpha)) - @width/2)
+      x = util.toPixels(targetTrans.x - (deltaTrans.x * invAlpha))
+      y = util.toPixels(targetTrans.y - (deltaTrans.y * invAlpha))
       r = targetTrans.rotation - (deltaTrans.rotation * invAlpha)
       s = targetTrans.scale - (deltaTrans.scale * invAlpha)
 

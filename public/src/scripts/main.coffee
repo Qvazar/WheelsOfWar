@@ -45,9 +45,13 @@ define(
 
     mainView = document.getElementById('mainView')
 
-    engine = new Engine({rootComponent, updateInterval: 500})
+    engine = new Engine({rootComponent, updateInterval: 100})
+
+    rootComponent.element.style.backgroundColor = 'skyblue'
 
     mainView.innerHTML = ''
     mainView.appendChild rootComponent.element
     engine.start()
+
+    window.engine = engine;
 )

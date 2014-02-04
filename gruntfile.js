@@ -136,8 +136,13 @@ module.exports = function(grunt) {
                 algorithm: 'binary-tree'
             }
         },
+        compass: {
+            all: {
+
+            }
+        },
         build: {
-            tasks: ['sprite', 'coffee', 'copy']
+            tasks: ['compass', 'sprite', 'coffee', 'copy']
         }
     });
 
