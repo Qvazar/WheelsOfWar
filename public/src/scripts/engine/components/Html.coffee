@@ -5,7 +5,7 @@ define ['underscore', '../log', '../css', '../util', '../Transformation', './Com
 
   # Create sprite stylesheet
   css.createRule ".#{cssClass} { display:block; position:absolute; top:0; left:0; }"
-  #css.createRule ".#{anchorCssClass} { display:block; position:absolute; top:50%; left:50%; width:1px; height:1px; overflow:visible; }"
+  css.createRule ".#{anchorCssClass} { display:block; position:absolute; top:50%; left:50%; width:1px; height:1px; overflow:visible; }"
 
   class HtmlElementComponent extends Component
 
@@ -77,7 +77,7 @@ define ['underscore', '../log', '../css', '../util', '../Transformation', './Com
       r = targetTrans.rotation - (deltaTrans.rotation * invAlpha)
       s = targetTrans.scale - (deltaTrans.scale * invAlpha)
 
-      css.transform @element, x, y, r, s if (context.counter % 7 is 0)
+      css.transform @element, x, y, r, s
 
       if not @renderContext?
         @renderContext = Object.create(context)

@@ -5,17 +5,17 @@ requirejs.config
         'json': '../lib/requirejs-plugins/src/json',
         #'knockout': '../lib/knockout.js/knockout',
         #'bootstrap': '../lib/bootstrap/dist/js/bootstrap',
-        'jquery': '../lib/jquery/jquery',
+        #'jquery': '../lib/jquery/jquery',
         #'socket.io': '/socket.io/socket.io',
         'underscore': '../lib/underscore/underscore'
         #'lazy': '../lib/lazy/dist/lazy',
-        'requestAnimationFrame': '../shims/requestAnimationFrame',
+        #'requestAnimationFrame': '../shims/requestAnimationFrame',
         'newton': '../lib/newton/newton'
     },
     shim: {
-      'requestAnimationFrame': {
-        exports: 'requestAnimationFrame'
-      },
+#      'requestAnimationFrame': {
+#        exports: 'requestAnimationFrame'
+#      },
       'newton': {
         exports: 'Newton'
       },
@@ -32,25 +32,26 @@ requirejs.config
     }
 
 define(
-  ['engine/log', 'engine/Engine', 'engine/components/Component', 'engine/components/Html'],
-  (log, Engine, Component, HtmlComponent) ->
+  ['engine/log', 'engine/Engine', 'engine/components/Viewport', 'engine/components/Html'],
+  (log, Engine, Viewport, HtmlComponent) ->
     log.debugEnabled = yes
 
-    class Rotator extends HtmlComponent
-      update: (context) ->
-        @transformation.rotation += Math.PI / 16
-        super
+#    class Rotator extends HtmlComponent
+#      update: (context) ->
+#        @transformation.rotation += Math.PI / 16
+#        super
 
-    rootComponent = new Rotator({width:10, height:10, cssClasses: 'root-node'})
+#    rootComponent = new Rotator({width:10, height:10, cssClasses: 'root-node'})
 
+    viewport = new Viewport()
     mainView = document.getElementById('mainView')
 
-    engine = new Engine({rootComponent, updateInterval: 100})
+    engine = new Engine({viewport})
 
-    rootComponent.element.style.backgroundColor = 'skyblue'
+    viewport.element.style.backgroundColor = 'skyblue'
 
     mainView.innerHTML = ''
-    mainView.appendChild rootComponent.element
+    mainView.appendChild viewport.element
     engine.start()
 
     window.engine = engine;

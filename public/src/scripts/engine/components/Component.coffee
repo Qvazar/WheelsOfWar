@@ -1,4 +1,4 @@
-define ['underscore', '../ComponentCollection'], (_, ComponentCollection) ->
+define ['underscore', './ComponentCollection'], (_, ComponentCollection) ->
 
   class Component extends ComponentCollection
 

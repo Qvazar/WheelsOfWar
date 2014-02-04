@@ -43,6 +43,13 @@ module.exports = function(grunt) {
                     livereload: true
                 }
             }
+//            sass: {
+//                files: ['public/src/sass/**/*.scss'],
+//                tasks: ['compass:dev'],
+//                options: {
+//                    livereload: true
+//                }
+//            }
         },
         copy: {
             js: {
@@ -126,8 +133,9 @@ module.exports = function(grunt) {
             }
         },
         concurrent: {
-            tasks: ['nodemon', 'watch', 'compass:watch'],
+            tasks: ['compass:watch', 'nodemon', 'watch'],
             options: {
+                limit: 4,
                 logConcurrentOutput: true
             }
         },
@@ -147,7 +155,7 @@ module.exports = function(grunt) {
             }
         },
         compass: {
-            public: {
+            dev: {
                 options: {
                     sassDir: 'public/src/sass',
                     cssDir: 'public/build/dev/styles'
@@ -179,7 +187,7 @@ module.exports = function(grunt) {
     grunt.option('force', true);
 
     //Default task(s).
-    grunt.registerTask('build', ['compass', 'sprite', 'jshint', 'coffee', 'copy']);
+    grunt.registerTask('build', ['compass:dev', 'sprite', 'jshint', 'coffee', 'copy']);
     grunt.registerTask('default', ['build', 'concurrent']);
 
     //Test task.
