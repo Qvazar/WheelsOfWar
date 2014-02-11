@@ -15,7 +15,6 @@ define ['../../log', '../../css', '../../util', './Html'], (log, css, util, Html
 
       @renderContextExt =
         canvas:
-          context: @canvasContext
           draw: @drawOnCanvas.bind(this)
 
       @renderContext = null

@@ -11,7 +11,7 @@ requirejs.config
         #'lazy': '../lib/lazy/dist/lazy',
         'requestAnimationFrame': '../shims/requestAnimationFrame',
         #'newton': '../lib/newton/newton',
-        'box2d': '../lib/box2d-html5/package/box2d-html5'
+        'Box2D': '../lib/box2d-html5/package/box2d-html5'
     },
     shim: {
       'requestAnimationFrame': {
@@ -33,8 +33,8 @@ requirejs.config
     }
 
 define(
-  ['engine/log', 'engine/Engine', 'engine/components/html/Viewport', 'engine/components/html/Html', 'box2d'],
-  (log, Engine, Viewport, HtmlComponent, Box2D) ->
+  ['engine/log', 'engine/Engine', 'engine/components/html/Viewport', 'engine/components/html/Html'],
+  (log, Engine, Viewport, HtmlComponent) ->
     log.debugEnabled = yes
     debugger;
 

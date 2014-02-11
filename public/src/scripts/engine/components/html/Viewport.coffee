@@ -13,7 +13,7 @@ define ['../../log', '../../util', '../../css', '../ComponentCollection'],
       constructor: (args) ->
         super
         @element = @createElement()
-        @contextExt = {element: @element.firstChild}
+        @updateContextExt = {element: @element.firstChild}
         @updateContext = null
         @renderContext = null
 
@@ -34,13 +34,13 @@ define ['../../log', '../../util', '../../css', '../ComponentCollection'],
         if @element.parentNode isnt context.element
           context.element?.appendChild @element
 
-        @updateContext ?= _.extend Object.create(context), @contextExt
+        @updateContext ?= _.extend Object.create(context), @updateContextExt
 
         c.update?(@updateContext) for cn, c of @components
         return
 
       render: (context) ->
-        @renderContext ?= _.extend Object.create(context), @contextExt
+        @renderContext ?= _.extend Object.create(context), @updateContextExt
 
         c.render?(@renderContext) for cn, c of @components
         return

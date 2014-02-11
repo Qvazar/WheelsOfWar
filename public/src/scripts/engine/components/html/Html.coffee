@@ -19,7 +19,7 @@ define ['underscore', '../../log', '../../css', '../../util', '../../Transformat
         @width ?= 1
         @height ?= 1
         @element = @createElement()
-        @contextExt = {element: @element.firstChild}
+        @updateContextExt = {element: @element.firstChild}
         @updateContext = null
         @renderContext = null
 
@@ -62,7 +62,7 @@ define ['underscore', '../../log', '../../css', '../../util', '../../Transformat
         oldTransformation.rotation = newTransformation.rotation
         oldTransformation.scale = newTransformation.scale
 
-        @updateContext ?= _.extend Object.create(context), @contextExt
+        @updateContext ?= _.extend Object.create(context), @updateContextExt
 
         super @updateContext
         return
@@ -78,7 +78,7 @@ define ['underscore', '../../log', '../../css', '../../util', '../../Transformat
 
         css.transform @element, x, y, r, s
 
-        @renderContext ?= _.extend Object.create(context), @contextExt
+        @renderContext ?= _.extend Object.create(context), @updateContextExt
 
         super @renderContext
         return
