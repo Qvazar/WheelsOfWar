@@ -82,7 +82,8 @@ module.exports = function(grunt) {
                             'requirejs/require.js',
                             //'lazy/dist/lazy.js',
                             'underscore/underscore.js',
-                            'newton/newton.js',
+                            //'newton/newton.js',
+                            'box2d-html5/**/*.js',
                             'requirejs-plugins/src/*.js'
                         ],
                         dest: 'public/build/dev/lib'
