@@ -1,4 +1,4 @@
-define ['./log', 'newton', 'underscore'], (log, Newton, _) ->
+define ['./log', 'underscore'], (log, _) ->
 
   class Engine
 

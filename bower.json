@@ -5,7 +5,7 @@
     "requirejs": "latest",
     "requirejs-plugins": "latest",
     "underscore": "latest",
-    "newton": "latest"
+    "box2d-html5": "latest"
   },
   "maybeDeps": {
     "knockout": "latest",
