@@ -1,4 +1,4 @@
-define ['../log', '../util', '../css', './ComponentCollection'],
+define ['../../log', '../../util', '../../css', '../ComponentCollection'],
   (log, util, css, ComponentCollection) ->
 
     cssClass = 'viewport'
@@ -23,21 +23,24 @@ define ['../log', '../util', '../css', './ComponentCollection'],
         element.innerHTML = "<div class=\"#{anchorCssClass}\"></div>"
         return element
 
+      removed: (parent) ->
+        @element.parentNode?.removeChild @element
+        @updateContext = null
+        @renderContext = null
+        super
+        return
+
       update: (context) ->
         if @element.parentNode isnt context.element
           context.element?.appendChild @element
 
-        if not @updateContext?
-          @updateContext = Object.create(context)
-          @updateContext = _.extend(@updateContext, @contextExt)
+        @updateContext ?= _.extend Object.create(context), @contextExt
 
-        c.update(args) for cn, c of @components
+        c.update?(@updateContext) for cn, c of @components
         return
 
       render: (context) ->
-        if not @renderContext?
-          @renderContext = Object.create(context)
-          @renderContext = _.extend(@renderContext, @contextExt)
+        @renderContext ?= _.extend Object.create(context), @contextExt
 
-        c.render(args) for cn, c of @components
+        c.render?(@renderContext) for cn, c of @components
         return

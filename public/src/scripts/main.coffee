@@ -32,7 +32,7 @@ requirejs.config
     }
 
 define(
-  ['engine/log', 'engine/Engine', 'engine/components/Viewport', 'engine/components/Html'],
+  ['engine/log', 'engine/Engine', 'engine/components/html/Viewport', 'engine/components/html/Html'],
   (log, Engine, Viewport, HtmlComponent) ->
     log.debugEnabled = yes
 
@@ -46,7 +46,7 @@ define(
     viewport = new Viewport()
     mainView = document.getElementById('mainView')
 
-    engine = new Engine({viewport})
+    engine = new Engine(rootComponent: viewport)
 
     viewport.element.style.backgroundColor = 'skyblue'
 

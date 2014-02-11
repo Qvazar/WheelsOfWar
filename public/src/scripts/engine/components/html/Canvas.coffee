@@ -1,4 +1,4 @@
-define ['../log', '../css', '../util', './Html'], (log, css, util, HtmlComponent) ->
+define ['../../log', '../../css', '../../util', './Html'], (log, css, util, HtmlComponent) ->
 
   cssClass = 'canvas-component'
 
@@ -13,7 +13,11 @@ define ['../log', '../css', '../util', './Html'], (log, css, util, HtmlComponent
       @clearOnRender ?= false
       @canvasContext = @element.getContext?('2d') or throw new Error 'canvas 2d context is not supported.'
 
-      @renderContextExt = {@canvasContext, draw: @drawOnCanvas.bind(this)}
+      @renderContextExt =
+        canvas:
+          context: @canvasContext
+          draw: @drawOnCanvas.bind(this)
+
       @renderContext = null
 
     createElement: () ->
@@ -27,9 +31,7 @@ define ['../log', '../css', '../util', './Html'], (log, css, util, HtmlComponent
     render: (context) ->
       @clearCanvas() if @clearOnRender
 
-      if @renderContext?.prototype isnt context
-        @renderContext = Object.create(context)
-        @renderContext = _.extend(@renderContext, @renderContextExt)
+      @renderContext ?= _.extend Object.create(context), @renderContextExt
 
       super @renderContext
       return

@@ -22,11 +22,11 @@ define ['underscore', './ComponentCollection'], (_, ComponentCollection) ->
 #        @absoluteTransformation.translation[1] += parentAbsTrans.translation[1]
 #        @absoluteTransformation.rotation += parentAbsTrans.rotation
 
-      c.update(args) for cn, c of @components
+      c.update?(args) for cn, c of @components
       return
 
     render: (args) ->
-      c.render(args) for cn, c of @components
+      c.render?(args) for cn, c of @components
       return
 
  #   getAbsoluteTransformation: (transformation = {translation:[0, 0], rotation: 0}) ->

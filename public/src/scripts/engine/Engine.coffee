@@ -38,7 +38,7 @@ define ['./log', 'newton', 'underscore'], (log, Newton, _) ->
       context.time = @time
       context.counter += 1
 
-      @rootComponent.update(context) if @rootComponent?
+      @rootComponent?.update(context)
 
       @timeOfLastUpdate = Date.now()
 
@@ -55,7 +55,7 @@ define ['./log', 'newton', 'underscore'], (log, Newton, _) ->
       context.alpha = timeSinceUpdate / @updateInterval
       context.fps = Math.round 1000 / context.deltaTime
 
-      @rootComponent.render(context) if @rootComponent?
+      @rootComponent?.render(context)
       @timeOfLastRender = now
 
       return

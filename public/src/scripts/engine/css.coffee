@@ -51,4 +51,6 @@ define ['./log'], (log) ->
 
       element.style[vendorProperty('transform', element)] = transformStringArray.join('')
       return
+
+    vendorProperty
   }
